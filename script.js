@@ -33,7 +33,31 @@ app.get('/api/customers/:id', (req, res) => {
 });
 
 //POST Opearation
+app.post('/api/customers', (req, res) => {
 
+    const {error} = validateCustomer(req.body);
+    if(error){
+        res.status(400).send(error.details[0].message)
+        return;
+    }
+    const customer = {
+        id: customers.length + 1,
+        title: req.body.title
+    };
+
+    customers.push(customer);
+    res.send(customer);
+});
+
+// PUT Operation
+
+
+function validateCustomer(customer){
+    const schema = {
+        title: Joi.string().min(3).required()
+    };
+    return Joi.validate(customer, schema);
+}
 
 
 // Port
