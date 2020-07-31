@@ -37,7 +37,7 @@ app.post('/api/customers', (req, res) => {
 
     const {error} = validateCustomer(req.body);
     if(error){
-        res.status(400).send(error.details[0].message)
+        res.status(400).send(error.details[0].message);
         return;
     }
     const customer = {
@@ -50,6 +50,30 @@ app.post('/api/customers', (req, res) => {
 });
 
 // PUT Operation
+app.put('/api/customers/:id', (req, res) => {
+    const customer = customers.find(c => c.id === parseInt(req.params.id) );
+    if(!customer) res.status(404).send('<h3 style ="color: blue;">Sorry, Did not find that</h3>');
+
+    const { error } =  validateCustomer(req.body);
+    if(error){
+        res.status(400).send(error.details[0].message);
+        return;
+    }
+
+    customers.title = req.body.title;
+    res.send(customer);
+});
+
+// DELETE Operation
+app.delete('/api/customers/:id', (req, res) => {
+    const customer = customers.find(c => c.id === parseInt(req.params.id) );
+    if(!customer) res.status(404).send('<h3 style ="color: blue;">Sorry, Did not find that</h3>');
+
+    const index = customers.indexOf(customer);
+    customers.splice(index, 1);
+
+    res.send(customer);
+});
 
 
 function validateCustomer(customer){
