@@ -25,8 +25,15 @@ app.get('/api/customers', (req, res) => {
 
 // Info of a particular customer
 app.get('/api/customers/:id', (req, res) => {
+    const customer = customers.find(c => c.id === parseInt(req.params.id) );
     
+    //Invalid ID
+    if(!customer) res.status(404).send('<h3 style ="color: blue;">Sorry, Did not find that</h3>');
+    res.send(customer);
 });
+
+//POST Opearation
+
 
 
 // Port
